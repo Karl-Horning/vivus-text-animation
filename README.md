@@ -1,6 +1,6 @@
 # Vivus Text Animation
 
-![Preview Image](./src/img/preview.webp)
+![Preview Image](./src/img/preview.gif)
 
 ## Table of Contents
 - [Overview](#overview)
