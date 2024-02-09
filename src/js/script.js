@@ -9,6 +9,23 @@ document.addEventListener("DOMContentLoaded", () => {
     const worldOutline = document.getElementById("worldOutline");
     const helloBg = document.getElementById("helloBg");
     const worldBg = document.getElementById("worldBg");
+    const allSvgElements = [helloOutline, worldOutline, helloBg, worldBg];
+    const animateBtn = document.getElementById("animateBtn");
+
+    // Check if all SVG elements are found
+    if (
+        !svgElement ||
+        !helloOutline ||
+        !worldOutline ||
+        !helloBg ||
+        !worldBg ||
+        !animateBtn
+    ) {
+        console.error(
+            "Failed to find required SVG elements or animation button."
+        );
+        return; // Exit the function if any required element is missing
+    }
 
     // Constants for colours and timings
     const transparentBlack = "rgba(0, 0, 0, 0)";
@@ -16,19 +33,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /**
      * Callback function to execute when the animation is complete.
-     * Changes the fill colors of SVG elements with a fade effect.
+     * Changes the fill colours of SVG elements with a fade effect.
      */
     const onComplete = () => {
         console.log("Animation complete");
         // Additional code to execute when the animation is complete
         // Fading in different SVG elements with specified timing and colours
-        fadeFill({ element: helloOutline, transitionTime: 1.2 });
-        fadeFill({ element: worldOutline });
+        fadeFill({ element: helloOutline });
+        fadeFill({ element: worldOutline, transitionTime: 2 });
         fadeFill({
             element: helloBg,
             transparentColour: transparentBlack,
             fillColour: fillBlack,
-            transitionTime: 2,
+            transitionTime: 1.2,
         });
         fadeFill({
             element: worldBg,
@@ -36,10 +53,12 @@ document.addEventListener("DOMContentLoaded", () => {
             fillColour: fillBlack,
             transitionTime: 2.2,
         });
+        // Re-enable animation button after completion
+        animateBtn.disabled = false;
     };
 
     /**
-     * Applies a fade effect to the fill color of an SVG element.
+     * Applies a fade effect to the fill colour of an SVG element.
      * @param {Object} options - Options for the fade effect.
      * @param {HTMLElement} options.element - The SVG element to apply the fade effect.
      * @param {string} [options.transparentColour="rgba(255, 255, 255, 0)"] - The transparent colour for the fade effect.
@@ -62,12 +81,37 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 100);
     };
 
-    // Initialize Vivus SVG animation
-    const vivus = new Vivus(svgElement, { duration: 200 }, onComplete);
-    vivus.play();
+    /**
+     * Resets the animation by clearing fill colours and disabling the animation button.
+     */
+    const resetAnimation = () => {
+        animateBtn.disabled = true;
+        // Clear fill colours
+        allSvgElements.forEach((element) => {
+            element.style.fill = "none";
+        });
+    };
 
-    // Check if animation is complete
-    vivus.getStatus() === "end"
-        ? console.log("Animation complete!")
-        : console.log("Animation in progress...");
+    /**
+     * Starts the SVG animation.
+     * Resets animation, initializes Vivus SVG animation, and handles animation completion.
+     */
+    const startAnimation = () => {
+        resetAnimation();
+
+        // Initialize Vivus SVG animation
+        const vivus = new Vivus(svgElement, { duration: 200 }, onComplete);
+        vivus.play();
+
+        // Check if animation is complete
+        vivus.getStatus() === "end"
+            ? console.log("Animation complete!")
+            : console.log("Animation in progress...");
+    };
+
+    // Event listener for animation button click
+    animateBtn.addEventListener("click", startAnimation);
+
+    // Initialize the animation to start when the page has loaded
+    startAnimation();
 });
