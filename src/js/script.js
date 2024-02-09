@@ -27,9 +27,13 @@ document.addEventListener("DOMContentLoaded", () => {
         return; // Exit the function if any required element is missing
     }
 
-    // Constants for colours and timings
-    const transparentBlack = "rgba(0, 0, 0, 0)";
-    const fillBlack = "rgba(0, 0, 0, 1)";
+    // Colour palette
+    const colours = {
+        transparentBlack: "rgba(0, 0, 0, 0)",
+        fillBlack: "rgba(0, 0, 0, 1)",
+        transparentWhite: "rgba(255, 255, 255, 0)",
+        fillWhite: "rgba(255, 255, 255, 1)",
+    };
 
     /**
      * Callback function to execute when the animation is complete.
@@ -43,14 +47,14 @@ document.addEventListener("DOMContentLoaded", () => {
         fadeFill({ element: worldOutline, transitionTime: 2 });
         fadeFill({
             element: helloBg,
-            transparentColour: transparentBlack,
-            fillColour: fillBlack,
+            transparentColour: colours.transparentBlack,
+            fillColour: colours.fillBlack,
             transitionTime: 1.2,
         });
         fadeFill({
             element: worldBg,
-            transparentColour: transparentBlack,
-            fillColour: fillBlack,
+            transparentColour: colours.transparentBlack,
+            fillColour: colours.fillBlack,
             transitionTime: 2.2,
         });
         // Re-enable animation button after completion
@@ -67,8 +71,8 @@ document.addEventListener("DOMContentLoaded", () => {
      */
     const fadeFill = ({
         element,
-        transparentColour = "rgba(255, 255, 255, 0)",
-        fillColour = "rgba(255, 255, 255, 1)",
+        transparentColour = colours.transparentWhite,
+        fillColour = colours.fillWhite,
         transitionTime = 1,
     }) => {
         // Set initial opacity to 0
